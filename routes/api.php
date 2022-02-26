@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,3 +15,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
+});
