@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\CssSelector\Node\FunctionNode;
@@ -21,5 +22,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::get('/user', [UserController::class, 'show'])->name('user-show');
+        Route::put('/user', [UserController::class, 'update'])->name('user-update');
     });
 });
