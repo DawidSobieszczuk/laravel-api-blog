@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ class UserController extends ApiController
 {
     public function show()
     {
-        return $this->response(Auth::user());
+        return $this->response(new UserResource(auth('sanctum')->user()));
     }
 
     public function update(Request $request)
@@ -21,11 +22,9 @@ class UserController extends ApiController
             'password' => 'string|confirmed',
         ]);
 
-        /** @var User */
-        $user = Auth::user();
-
+        $user = $request->user();
         $user->update($fields);
 
-        return $this->response($user);
+        return $this->response(new UserResource($user));
     }
 }
