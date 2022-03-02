@@ -36,4 +36,9 @@ class User extends Authenticatable
             fn ($value) => Hash::make($value)
         );
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }
