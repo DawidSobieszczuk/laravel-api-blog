@@ -19,13 +19,6 @@ class ArticleTest extends TestCase
     private const VERSION = 'v1';
     private const RESPONSE_KEYS = ['id', 'title', 'content', 'user', 'is_draft', 'categories', 'tags', 'created_at', 'updated_at'];
 
-    private function create_admin()
-    {
-        return User::factory()->create([
-            'is_admin' => true,
-        ]);
-    }
-
     public function test_index()
     {
         Article::factory()->count(10)->state(
