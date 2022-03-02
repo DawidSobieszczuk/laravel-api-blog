@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\UserController;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -35,6 +36,12 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/articles', [ArticleController::class, 'store'])->name('articles-store');
             Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles-update');
             Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles-destroy');
+
+            Route::get('/options', [OptionController::class, 'index'])->name('options-index');
+            Route::post('/options', [OptionController::class, 'store'])->name('options-store');
+            Route::get('/options/{id}', [OptionController::class, 'show'])->name('options-show');
+            Route::put('/options/{id}', [OptionController::class, 'update'])->name('options-update');
+            Route::delete('/options/{id}', [OptionController::class, 'destroy'])->name('options-delete');
         });
     });
 });
