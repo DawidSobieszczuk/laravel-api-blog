@@ -3,12 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Article;
-use App\Models\User;
-use Database\Seeders\ArticleSeeder;
-use Database\Seeders\UserSeeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -33,7 +29,7 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->has(5)
+                $json->has('data')->count('data', 5)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
 
         Sanctum::actingAs($this->create_admin());
@@ -42,7 +38,7 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->has(10)
+                $json->has('data')->count('data', 10)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
     }
 
@@ -66,7 +62,12 @@ class ArticleTest extends TestCase
         $this->postJson($url, $data)
             ->assertValid()
             ->assertStatus(201)
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll(self::RESPONSE_KEYS));
+            ->assertJson(
+                fn (AssertableJson $json) =>
+                $json->has('data')->first(
+                    fn ($json) => $json->hasAll(self::RESPONSE_KEYS)
+                )
+            );
     }
 
     public function test_show()
@@ -82,7 +83,12 @@ class ArticleTest extends TestCase
 
         $this->getJson($url . '/1')
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll(self::RESPONSE_KEYS));
+            ->assertJson(
+                fn (AssertableJson $json) =>
+                $json->has('data')->first(
+                    fn ($json) => $json->hasAll(self::RESPONSE_KEYS)
+                )
+            );
 
         $this->getJson($url . '/2')
             ->assertStatus(404)
@@ -92,11 +98,21 @@ class ArticleTest extends TestCase
 
         $this->getJson($url . '/1')
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll(self::RESPONSE_KEYS));
+            ->assertJson(
+                fn (AssertableJson $json) =>
+                $json->has('data')->first(
+                    fn ($json) => $json->hasAll(self::RESPONSE_KEYS)
+                )
+            );
 
         $this->getJson($url . '/2')
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll(self::RESPONSE_KEYS));
+            ->assertJson(
+                fn (AssertableJson $json) =>
+                $json->has('data')->first(
+                    fn ($json) => $json->hasAll(self::RESPONSE_KEYS)
+                )
+            );
     }
 
     public function test_update()
@@ -115,7 +131,12 @@ class ArticleTest extends TestCase
 
         $this->putJson($url, $data)
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll(self::RESPONSE_KEYS)->where('title', 'newTitle'));
+            ->assertJson(
+                fn (AssertableJson $json) =>
+                $json->has('data')->first(
+                    fn ($json) => $json->hasAll(self::RESPONSE_KEYS)->where('title', 'newTitle')
+                )
+            );
     }
 
     public function test_destroy()

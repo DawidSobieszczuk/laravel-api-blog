@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Option;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -28,7 +27,10 @@ class OptionTest extends TestCase
 
         $this->getJson($url)
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) => $json->has(10));
+            ->assertJson(
+                fn (AssertableJson $json) =>
+                $json->has('data')->count('data', 10)->has('data.0', fn ($json) => $json->hasAll(['id', 'name', 'value']))
+            );
     }
 
     public function test_store()
@@ -49,9 +51,10 @@ class OptionTest extends TestCase
             ->assertStatus(201)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->has('id')
-                    ->where('name', 'Name')
-                    ->where('value', 'Value')
+                $json->has('data.id')
+                    ->where('data.name', 'Name')
+                    ->where('data.value', 'Value')
+
             );
     }
 
@@ -68,7 +71,7 @@ class OptionTest extends TestCase
 
         $this->getJson($url)
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll('id', 'name', 'value'));
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll('data.id', 'data.name', 'data.value'));
     }
 
     public function test_update()
@@ -89,8 +92,8 @@ class OptionTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->hasAll('id', 'name')
-                    ->where('value', 'newValue')
+                $json->hasAll('data.id', 'data.name')
+                    ->where('data.value', 'newValue')
             );
     }
 

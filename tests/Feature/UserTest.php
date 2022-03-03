@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -13,8 +12,8 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-
     private const VERSION = 'v1';
+    private const RESPONSE_KEYS = ['id', 'name', 'email', 'is_admin', 'created_at', 'updated_at'];
 
     public function test_show()
     {
@@ -31,8 +30,7 @@ class UserTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->hasAll(['name', 'email', 'is_admin'])
-                    ->missing('password')->etc()
+                $json->has('data')->first(fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
     }
 
@@ -46,8 +44,6 @@ class UserTest extends TestCase
         $this->putJson($url)
             ->assertStatus(401)
             ->assertJson(fn (AssertableJson $json) => $json->has('message'));
-
-
 
         Sanctum::actingAs($user);
 
@@ -66,8 +62,7 @@ class UserTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->hasAll(['name', 'email', 'is_admin'])
-                    ->missing('password')->etc()
+                $json->has('data')->first(fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
 
         $this->assertTrue(

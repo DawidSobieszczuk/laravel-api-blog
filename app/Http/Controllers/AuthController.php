@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends ApiController
@@ -32,16 +31,20 @@ class AuthController extends ApiController
 
         $token = $user->createToken($this->tokenName);
 
-        return $this->response([
-            'user' => new UserResource($user),
-            'token' => $token->plainTextToken,
-        ], 201);
+        return $this->response(
+            [
+                'data' => [
+                    'user' => new UserResource($user),
+                    'token' => $token->plainTextToken,
+                ]
+            ],
+            201
+        );
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-
-        return $this->responseMessage('Logout');
+        return $this->responseMessage('Logout.');
     }
 }

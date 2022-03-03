@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends ApiController
 {
@@ -21,7 +20,7 @@ class ArticleController extends ApiController
             $articles = Article::where('is_draft', false)->with('user')->get();
         }
 
-        return $this->response(ArticleResource::collection($articles));
+        return ArticleResource::collection($articles);
     }
 
     public function store(Request $request)
@@ -41,7 +40,7 @@ class ArticleController extends ApiController
         $article = $request->user()->articles()->create($fields);
 
         $article->load('user');
-        return $this->response(new ArticleResource($article), 201);
+        return new ArticleResource($article);
     }
 
     public function show($id)
@@ -57,7 +56,7 @@ class ArticleController extends ApiController
             return $this->responseNotFound();
         }
 
-        return $this->response(new ArticleResource($article));
+        return new ArticleResource($article);
     }
 
     public function update(Request $request, $id)
@@ -77,8 +76,7 @@ class ArticleController extends ApiController
         ]);
 
         $article->update($fields);
-
-        return $this->response(new ArticleResource($article));
+        return new ArticleResource($article);
     }
 
     public function destroy($id)
@@ -90,7 +88,6 @@ class ArticleController extends ApiController
         }
 
         $article->delete();
-
-        return $this->responseMessage('Destroyed');
+        return $this->responseMessage('Destroyed.');
     }
 }

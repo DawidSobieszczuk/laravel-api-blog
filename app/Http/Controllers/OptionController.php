@@ -10,7 +10,7 @@ class OptionController extends ApiController
 {
     public function index()
     {
-        return $this->response(OptionResource::collection(Option::all()));
+        return OptionResource::collection(Option::all());
     }
 
     public function store(Request $request)
@@ -20,7 +20,7 @@ class OptionController extends ApiController
             'value' => 'required|string',
         ]);
 
-        return $this->response(new OptionResource(Option::create($fields)), 201);
+        return new OptionResource(Option::create($fields));
     }
 
     public function show($id)
@@ -31,7 +31,7 @@ class OptionController extends ApiController
             return $this->responseNotFound();
         }
 
-        return $this->response(new OptionResource($option));
+        return new OptionResource($option);
     }
 
     public function update(Request $request, $id)
@@ -48,7 +48,7 @@ class OptionController extends ApiController
         ]);
 
         $option->update($fields);
-        return $this->response(new OptionResource($option));
+        return new OptionResource($option);
     }
 
     public function destroy($id)
@@ -60,7 +60,6 @@ class OptionController extends ApiController
         }
 
         $option->delete();
-
-        return $this->responseMessage('Destroyed');
+        return $this->responseMessage('Destroyed.');
     }
 }

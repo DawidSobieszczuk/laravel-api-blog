@@ -2,12 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -32,10 +29,9 @@ class AuthTest extends TestCase
             ->assertStatus(201)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->hasAll('user', 'token')
+                $json->hasAll('data.user', 'data.token')
             );
         $this->assertDatabaseCount('personal_access_tokens', 1);
-
 
         $this->postJson($url, [
             'email' => self::USER_EMAIL . '0',
@@ -79,7 +75,7 @@ class AuthTest extends TestCase
         $token = $this->postJson($urlLogin, [
             'email' => self::USER_EMAIL,
             'password' => self::USER_PASSWORD,
-        ])->json()['token'];
+        ])->json()['data']['token'];
         $this->assertDatabaseCount('personal_access_tokens', 1);
 
         $this->getJson($urlLogout)
