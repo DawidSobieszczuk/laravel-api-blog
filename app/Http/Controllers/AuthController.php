@@ -33,7 +33,7 @@ class AuthController extends ApiController
         $token = $user->createToken($this->tokenName);
 
         return $this->response([
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token->plainTextToken,
         ], 201);
     }
