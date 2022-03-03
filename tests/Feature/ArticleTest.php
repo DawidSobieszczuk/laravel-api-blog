@@ -29,7 +29,7 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->has('data')->count('data', 5)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
+                $json->hasAll(['data', 'links', 'meta'])->count('data', 5)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
 
         Sanctum::actingAs($this->create_admin());
@@ -38,7 +38,7 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) =>
-                $json->has('data')->count('data', 10)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
+                $json->hasAll(['data', 'links', 'meta'])->count('data', 10)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
     }
 

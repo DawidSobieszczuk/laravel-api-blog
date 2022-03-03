@@ -8,16 +8,21 @@ use Illuminate\Http\Request;
 
 class ArticleController extends ApiController
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth('sanctum')->user();
+        $fields = $request->validate([
+            'per_page' => 'int',
+        ]);
+
+        $fields['per_page'] = $fields['per_page'] ?? null;
 
         $articles = null;
 
         if ($user && $user->is_admin) {
-            $articles = Article::with('user')->get();
+            $articles = Article::with('user')->paginate($fields['per_page']);
         } else {
-            $articles = Article::where('is_draft', false)->with('user')->get();
+            $articles = Article::where('is_draft', false)->with('user')->paginate($fields['per_page']);
         }
 
         return ArticleResource::collection($articles);
