@@ -31,6 +31,9 @@ class SearchTest extends TestCase
 
         $this->assertSearch($url, 'a', 0);
         $this->assertSearch($url, 'aaa', 1);
+
+        $this->assertPagination($url . '/aaa?per_page=5', 5);
+        $this->assertPagination($url . '/aaa?per_page=-1', 15);
     }
 
     public function test_tag()
@@ -40,6 +43,9 @@ class SearchTest extends TestCase
 
         $this->assertSearch($url, 'a', 0);
         $this->assertSearch($url, 'aaa', 1);
+
+        $this->assertPagination($url . '/aaa?per_page=5', 5);
+        $this->assertPagination($url . '/aaa?per_page=-1', 15);
     }
 
     public function test_search()
@@ -66,5 +72,8 @@ class SearchTest extends TestCase
         $this->assertSearch($url, 'aaa', 1);
         $this->assertSearch($url, 'yyy', 1);
         $this->assertSearch($url, 'zero', 0);
+
+        $this->assertPagination($url . '/aaa?per_page=5', 5);
+        $this->assertPagination($url . '/aaa?per_page=-1', 15);
     }
 }
