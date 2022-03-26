@@ -15,7 +15,8 @@ class ArticleController extends ApiController
             'per_page' => 'int',
         ]);
 
-        $fields['per_page'] = $fields['per_page'] ?? null;
+        $fields['per_page'] = (int)($fields['per_page'] ?? null);
+        $fields['per_page'] = max($fields['per_page'], 0);
 
         $articles = null;
 

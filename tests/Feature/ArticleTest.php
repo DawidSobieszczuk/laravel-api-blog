@@ -40,6 +40,9 @@ class ArticleTest extends TestCase
                 fn (AssertableJson $json) =>
                 $json->hasAll(['data', 'links', 'meta'])->count('data', 10)->has('data.0', fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
+
+        $this->assertPagination($url . '?per_page=5', 5);
+        $this->assertPagination($url . '?per_page=-1', 15);
     }
 
     public function test_store()
