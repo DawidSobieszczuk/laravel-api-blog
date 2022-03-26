@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OptionController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,10 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles-index');
     Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles-show');
+
+    Route::get('/category/{slug}', [SearchController::class, 'category'])->name('category');
+    Route::get('/tag/{slug}', [SearchController::class, 'tag'])->name('tag');
+    Route::get('/search/{slug}', [SearchController::class, 'search'])->name('search');
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
