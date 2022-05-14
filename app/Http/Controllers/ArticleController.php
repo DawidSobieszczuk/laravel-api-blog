@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 
 class ArticleController extends ApiController
 {
+    private function is_user_admin()
+    {
+        return auth('sanctum')->user() ? auth('sanctum')->user()->is_admin : false;
+    }
+
     public function index(Request $request)
     {
-        $user = auth('sanctum')->user();
         $fields = $request->validate([
             'per_page' => 'int',
         ]);
@@ -18,15 +22,9 @@ class ArticleController extends ApiController
         $fields['per_page'] = (int)($fields['per_page'] ?? null);
         $fields['per_page'] = max($fields['per_page'], 0);
 
-        $articles = null;
-
-        if ($user && $user->is_admin) {
-            $articles = Article::with('user')->paginate($fields['per_page']);
-        } else {
-            $articles = Article::where('is_draft', false)->with('user')->paginate($fields['per_page']);
-        }
-
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection(Article::with('user')->when(!$this->is_user_admin(), function ($query) {
+            $query->where('is_draft', false);
+        })->paginate($fields['per_page']));
     }
 
     public function store(Request $request)
@@ -51,14 +49,11 @@ class ArticleController extends ApiController
 
     public function show($id)
     {
-        $user = auth('sanctum')->user();
-        $article = Article::with('user')->find($id);
+        $article = Article::with('user')->when(!$this->is_user_admin(), function ($query) {
+            $query->where('is_draft', false);
+        })->find($id);
 
         if (!$article) {
-            return $this->responseNotFound();
-        }
-
-        if (!($user && $user->is_admin) && $article->is_draft) {
             return $this->responseNotFound();
         }
 
