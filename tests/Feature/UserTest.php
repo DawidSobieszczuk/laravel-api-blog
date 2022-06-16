@@ -65,6 +65,8 @@ class UserTest extends TestCase
                 $json->has('data')->first(fn ($json) => $json->hasAll(self::RESPONSE_KEYS))
             );
 
+        $user = User::where('id', $user->id)->first();
+
         $this->assertTrue(
             $user->name == 'newName'
                 && $user->password != $oldPasswrodHash

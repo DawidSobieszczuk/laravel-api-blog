@@ -3,13 +3,20 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
-class UserRepository
+class UserRepository extends Repository
 {
-    protected $user;
-
     public function __construct(User $user)
     {
-        $this->user = $user;
+        $this->model = $user;
+    }
+
+    /**
+     * @return User
+     */
+    public function findByEmail(string $email)
+    {
+        return $this->model->where('email', $email)->first();
     }
 }

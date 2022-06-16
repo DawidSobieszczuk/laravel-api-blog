@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\UserResource;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends ApiController
 {
+    protected UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function show()
     {
-        return new UserResource(auth('sanctum')->user());
+        return new UserResource($this->userService->getCurrentLoggedUser());
     }
 
     public function update(Request $request)
     {
-        $fields = $request->validate([
-            'name' => 'string',
-            'email' => 'email|unique:users,email',
-            'password' => 'string|confirmed',
-        ]);
-
-        $user = $request->user();
-        $user->update($fields);
-        return new UserResource($user);
+        return new UserResource($this->userService->updateCurrentLoggedUser($request));
     }
 }

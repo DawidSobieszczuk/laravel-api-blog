@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,35 +12,20 @@ class AuthController extends ApiController
 {
     private string $tokenName = 'TokenName';
 
+    protected UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function login(Request $request)
     {
-        $fields = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $token = $this->userService->createTokenFromRequest($request);
 
-        $user = User::where('email', $fields['email'])->first();
+        if (!$token) return $this->responseUnauthenticated("Email or password not match");
 
-        // Check email and password
-        $message = "Email or password not match";
-        if (!$user) {
-            return $this->responseUnauthenticated($message);
-        }
-        if (!Hash::check($fields['password'], $user->password)) {
-            return $this->responseUnauthenticated($message);
-        }
-
-        $token = $user->createToken($this->tokenName);
-
-        return $this->response(
-            [
-                'data' => [
-                    'user' => new UserResource($user),
-                    'token' => $token->plainTextToken,
-                ]
-            ],
-            201
-        );
+        return $this->response($token, 201);
     }
 
     public function logout(Request $request)
