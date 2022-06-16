@@ -34,7 +34,7 @@ class OptionService
         return $this->optionRepository->find($id);
     }
 
-    public function updateOptionById(Request $request, $id)
+    public function updateOptionById($id, Request $request)
     {
         $fields = $request->validate([
             'name' => 'string',

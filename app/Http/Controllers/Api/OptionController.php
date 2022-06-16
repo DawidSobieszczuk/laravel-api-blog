@@ -33,9 +33,9 @@ class OptionController extends ApiController
         return $option ? new OptionResource($option) : $this->responseNotFound();
     }
 
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        $option = $this->optionService->updateOptionById($request, $id);
+        $option = $this->optionService->updateOptionById($id, $request);
 
         return $option ? new OptionResource($option) : $this->responseNotFound();
     }
