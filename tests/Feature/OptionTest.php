@@ -17,13 +17,14 @@ class OptionTest extends TestCase
     public function test_index()
     {
         Option::factory()->count(10)->create();
-        $url = 'api/' . self::VERSION . '/admin/options';
+        $url = 'api/' . self::VERSION . '/options';
+        // $url = 'api/' . self::VERSION . '/admin/options';
 
-        $this->getJson($url)
-            ->assertStatus(401)
-            ->assertJson(fn (AssertableJson $json) => $json->has('message'));
+        // $this->getJson($url)
+        //     ->assertStatus(401)
+        //     ->assertJson(fn (AssertableJson $json) => $json->has('message'));
 
-        Sanctum::actingAs($this->create_admin());
+        // Sanctum::actingAs($this->create_admin());
 
         $this->getJson($url)
             ->assertStatus(200)
@@ -61,13 +62,14 @@ class OptionTest extends TestCase
     public function test_show()
     {
         Option::factory()->create();
-        $url = 'api/' . self::VERSION . '/admin/options/1';
+        $url = 'api/' . self::VERSION . '/options/1';
+        // $url = 'api/' . self::VERSION . '/admin/options/1';
 
-        $this->getJson($url)
-            ->assertStatus(401)
-            ->assertJson(fn (AssertableJson $json) => $json->has('message'));
+        // $this->getJson($url)
+        //     ->assertStatus(401)
+        //     ->assertJson(fn (AssertableJson $json) => $json->has('message'));
 
-        Sanctum::actingAs($this->create_admin());
+        // Sanctum::actingAs($this->create_admin());
 
         $this->getJson($url)
             ->assertStatus(200)

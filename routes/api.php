@@ -28,6 +28,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/tag/{slug}', [SearchController::class, 'tag'])->name('tag');
     Route::get('/search/{slug}', [SearchController::class, 'search'])->name('search');
 
+    Route::get('/options', [OptionController::class, 'index'])->name('options-index');
+    Route::get('/options/{id}', [OptionController::class, 'show'])->name('options-show');
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -39,9 +42,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles-update');
             Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles-destroy');
 
-            Route::get('/options', [OptionController::class, 'index'])->name('options-index');
             Route::post('/options', [OptionController::class, 'store'])->name('options-store');
-            Route::get('/options/{id}', [OptionController::class, 'show'])->name('options-show');
             Route::put('/options/{id}', [OptionController::class, 'update'])->name('options-update');
             Route::delete('/options/{id}', [OptionController::class, 'destroy'])->name('options-delete');
         });
