@@ -4,12 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Option;
 
-class OptionRepository
+class OptionRepository extends Repository
 {
-    protected $option;
-
     public function __construct(Option $option)
     {
-        $this->option = $option;
+        $this->model = $option;
     }
 }

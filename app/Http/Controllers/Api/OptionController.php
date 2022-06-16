@@ -4,62 +4,44 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\OptionResource;
 use App\Models\Option;
+use App\Services\OptionService;
 use Illuminate\Http\Request;
 
 class OptionController extends ApiController
 {
+    protected OptionService $optionService;
+
+    public function __construct(OptionService $optionService)
+    {
+        $this->optionService = $optionService;
+    }
+
     public function index()
     {
-        return OptionResource::collection(Option::all());
+        return OptionResource::collection($this->optionService->getAllOptions());
     }
 
     public function store(Request $request)
     {
-        $fields = $request->validate([
-            'name' => 'required|string',
-            'value' => 'required|string',
-        ]);
-
-        return new OptionResource(Option::create($fields));
+        return new OptionResource($this->optionService->createNewOption($request));
     }
 
     public function show($id)
     {
-        $option = Option::find($id);
+        $option = $this->optionService->getOptionById($id);
 
-        if (!$option) {
-            return $this->responseNotFound();
-        }
-
-        return new OptionResource($option);
+        return $option ? new OptionResource($option) : $this->responseNotFound();
     }
 
     public function update(Request $request, $id)
     {
-        $option = Option::find($id);
+        $option = $this->optionService->updateOptionById($request, $id);
 
-        if (!$option) {
-            return $this->responseNotFound();
-        }
-
-        $fields = $request->validate([
-            'name' => 'string',
-            'value' => 'string',
-        ]);
-
-        $option->update($fields);
-        return new OptionResource($option);
+        return $option ? new OptionResource($option) : $this->responseNotFound();
     }
 
     public function destroy($id)
     {
-        $option = Option::find($id);
-
-        if (!$option) {
-            return $this->responseNotFound();
-        }
-
-        $option->delete();
-        return $this->responseMessage('Destroyed.');
+        return $this->optionService->destroyOptionById($id) ? $this->responseMessage('Destroyed') : $this->responseNotFound();
     }
 }
