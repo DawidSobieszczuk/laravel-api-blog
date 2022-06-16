@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\OptionController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\OptionController;
+use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
