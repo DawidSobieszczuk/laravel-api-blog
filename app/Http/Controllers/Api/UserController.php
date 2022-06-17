@@ -22,6 +22,6 @@ class UserController extends ApiController
 
     public function update(Request $request)
     {
-        return new UserResource($this->userService->updateCurrentLoggedUser($request));
+        return new UserResource($this->userService->updateCurrentLoggedUserFromRequest($request));
     }
 }

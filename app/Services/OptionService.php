@@ -19,7 +19,7 @@ class OptionService
         return $this->optionRepository->all();
     }
 
-    public function createNewOption(Request $request)
+    public function createNewOptionFromRequest(Request $request)
     {
         $fields = $request->validate([
             'name' => 'required|string',
@@ -34,7 +34,7 @@ class OptionService
         return $this->optionRepository->find($id);
     }
 
-    public function updateOptionById($id, Request $request)
+    public function updateOptionByIdFromRequest($id, Request $request)
     {
         $fields = $request->validate([
             'name' => 'string',

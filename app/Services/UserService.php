@@ -22,7 +22,7 @@ class UserService
         return $this->userRepository->find($id);
     }
 
-    public function updateUserById($id, Request $request)
+    public function updateUserByIdFromRequest($id, Request $request)
     {
         $fields = $request->validate([
             'name' => 'string',
@@ -39,10 +39,10 @@ class UserService
         return $this->getUserById($id);
     }
 
-    public function updateCurrentLoggedUser(Request $request)
+    public function updateCurrentLoggedUserFromRequest(Request $request)
     {
         $id = Auth::user()->id;
-        return $this->updateUserById($id, $request);
+        return $this->updateUserByIdFromRequest($id, $request);
     }
 
     /**

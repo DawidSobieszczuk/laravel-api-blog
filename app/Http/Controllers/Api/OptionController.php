@@ -23,7 +23,7 @@ class OptionController extends ApiController
 
     public function store(Request $request)
     {
-        return new OptionResource($this->optionService->createNewOption($request));
+        return new OptionResource($this->optionService->createNewOptionFromRequest($request));
     }
 
     public function show($id)
@@ -35,7 +35,7 @@ class OptionController extends ApiController
 
     public function update($id, Request $request)
     {
-        $option = $this->optionService->updateOptionById($id, $request);
+        $option = $this->optionService->updateOptionByIdFromRequest($id, $request);
 
         return $option ? new OptionResource($option) : $this->responseNotFound();
     }
