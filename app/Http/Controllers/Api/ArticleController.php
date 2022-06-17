@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\ArticleResource;
-use App\Models\Article;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
@@ -16,7 +15,7 @@ class ArticleController extends ApiController
         $this->articleService = $articleService;
     }
 
-    private function is_user_admin()
+    private function isUserAdmin()
     {
         return auth('sanctum')->user() ? auth('sanctum')->user()->is_admin : false;
     }
@@ -30,7 +29,7 @@ class ArticleController extends ApiController
         $per_page = (int)($fields['per_page'] ?? null);
         $per_page = max($per_page, 0);
 
-        return ArticleResource::collection($this->articleService->getAllArticlesPaginate($this->is_user_admin(), $per_page));
+        return ArticleResource::collection($this->articleService->getAllArticlesPaginate($this->isUserAdmin(), $per_page));
     }
 
     public function store(Request $request)

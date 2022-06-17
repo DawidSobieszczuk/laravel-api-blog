@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\OptionResource;
-use App\Models\Option;
 use App\Services\OptionService;
 use Illuminate\Http\Request;
 

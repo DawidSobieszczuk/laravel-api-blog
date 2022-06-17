@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends ApiController
 {
-    private string $tokenName = 'TokenName';
 
     protected UserService $userService;
 

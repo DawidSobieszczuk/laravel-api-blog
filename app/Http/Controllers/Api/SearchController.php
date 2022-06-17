@@ -15,7 +15,7 @@ class SearchController extends ApiController
         $this->articleService = $articleService;
     }
 
-    private function is_user_admin()
+    private function isUserAdmin()
     {
         return auth('sanctum')->user() ? auth('sanctum')->user()->is_admin : false;
     }
@@ -29,7 +29,7 @@ class SearchController extends ApiController
         $per_page = (int)($fields['per_page'] ?? null);
         $per_page = max($per_page, 0);
 
-        return ArticleResource::collection($this->articleService->getArticlesByCategoryPaginate($slug, $this->is_user_admin(), $per_page));
+        return ArticleResource::collection($this->articleService->getArticlesByCategoryPaginate($slug, $this->isUserAdmin(), $per_page));
     }
 
     public function tag(Request $request, $slug)
@@ -41,7 +41,7 @@ class SearchController extends ApiController
         $per_page = (int)($fields['per_page'] ?? null);
         $per_page = max($per_page, 0);
 
-        return ArticleResource::collection($this->articleService->getArticlesByTagPaginate($slug, $this->is_user_admin(), $per_page));
+        return ArticleResource::collection($this->articleService->getArticlesByTagPaginate($slug, $this->isUserAdmin(), $per_page));
     }
 
     public function search(Request $request, $slug)
@@ -53,6 +53,6 @@ class SearchController extends ApiController
         $per_page = (int)($fields['per_page'] ?? null);
         $per_page = max($per_page, 0);
 
-        return ArticleResource::collection($this->articleService->searchArticlesPaginate($slug, $this->is_user_admin(), $per_page));
+        return ArticleResource::collection($this->articleService->searchArticlesPaginate($slug, $this->isUserAdmin(), $per_page));
     }
 }
