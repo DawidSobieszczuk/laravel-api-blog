@@ -6,6 +6,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserService
 {
@@ -70,5 +71,40 @@ class UserService
                 'token' => $user->createToken($this->tokenName)->plainTextToken,
             ],
         );
+    }
+
+    public function createNewUser($name, $email, $password, $isAdmin)
+    {
+        $input['name'] = $name;
+        $input['email'] = $email;
+        $input['password'] = $password;
+        $input['is_admin'] = $isAdmin;
+
+        $input = Validator::validate($input, [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string',
+            'is_admin' => 'required|boolean',
+        ]);
+
+        return $this->userRepository->create($input);
+    }
+
+    public function updateUserById($id, $name = null, $email = null, $password = null, $isAdmin = null)
+    {
+        $input = array();
+        if ($name) $input['name'] = $name;
+        if ($email) $input['email'] = $email;
+        if ($password) $input['password'] = $password;
+        if ($isAdmin) $input['is_admin'] = $isAdmin;
+
+        $input = Validator::validate($input, [
+            'name' => 'string',
+            'email' => 'email|unique:users,email',
+            'password' => 'string',
+            'is_admin' => 'boolean',
+        ]);
+
+        return $this->userRepository->update($id, $input);
     }
 }
