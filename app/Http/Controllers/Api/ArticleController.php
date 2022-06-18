@@ -39,7 +39,7 @@ class ArticleController extends ApiController
 
     public function show($id)
     {
-        $article = $this->articleService->getArticleById($id, $this->is_user_admin());
+        $article = $this->articleService->getArticleById($id, $this->isUserAdmin());
         return $article ? new ArticleResource($article) : $this->responseNotFound();
     }
 
