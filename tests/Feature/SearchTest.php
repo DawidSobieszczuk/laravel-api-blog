@@ -14,7 +14,7 @@ class SearchTest extends TestCase
     use RefreshDatabase;
 
     private const VERSION = 'v1';
-    private const ARTICLE_RESPONSE = ['id', 'title', 'content', 'user', 'is_draft', 'categories', 'tags', 'created_at', 'updated_at'];
+    private const ARTICLE_RESPONSE = ['id', 'title', 'content', 'user', 'is_draft', 'categories', 'tags', 'created_at', 'updated_at', 'thumbnail', 'excerpt'];
 
     private function assertSearch($url, $slug, $dataCount)
     {

@@ -17,6 +17,8 @@ class Article extends Model
         'is_draft',
         'categories',
         'tags',
+        'thumbnail',
+        'excerpt',
     ];
 
     protected $casts = [

@@ -45,6 +45,8 @@ class ArticleService
     {
         $fields = $request->validate([
             'title' => 'required|string',
+            'thumbnail' => 'required|string',
+            'excerpt' => 'required|string',
             'content' => 'required|string',
             'is_draft' => 'boolean',
             'categories' => 'array',
@@ -69,6 +71,8 @@ class ArticleService
     {
         $fields = $request->validate([
             'title' => 'string',
+            'thumbnail' => 'string',
+            'excerpt' => 'string',
             'content' => 'string',
             'is_draft' => 'boolean',
             'categories' => 'array',

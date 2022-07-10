@@ -13,7 +13,7 @@ class ArticleTest extends TestCase
 {
     use RefreshDatabase;
     private const VERSION = 'v1';
-    private const RESPONSE_KEYS = ['id', 'title', 'content', 'user', 'is_draft', 'categories', 'tags', 'created_at', 'updated_at'];
+    private const RESPONSE_KEYS = ['id', 'title', 'content', 'user', 'is_draft', 'categories', 'tags', 'created_at', 'updated_at', 'thumbnail', 'excerpt'];
 
     public function test_index()
     {
@@ -50,6 +50,8 @@ class ArticleTest extends TestCase
         $url = 'api/' . self::VERSION . '/admin/articles';
         $data = [
             'title' => 'title',
+            'thumbnail' => 'thumbnail',
+            'excerpt' => 'excerpt',
             'content' => 'conntent',
             'is_draft' => true,
             'categories' => ['One', 'Two'],

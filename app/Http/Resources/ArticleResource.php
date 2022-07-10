@@ -11,6 +11,8 @@ class ArticleResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'thumbnail' => $this->thumbnail,
+            'excerpt' => $this->excerpt,
             'content' => $this->content,
             'user' => new UserResource($this->whenLoaded('user')),
             'is_draft' => $this->is_draft,

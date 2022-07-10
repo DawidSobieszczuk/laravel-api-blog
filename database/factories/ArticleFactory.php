@@ -20,6 +20,8 @@ class ArticleFactory extends Factory
         return [
             'user_id' => User::factory(),
             'title' => $this->faker->sentence(),
+            'thumbnail' => $this->faker->word(),
+            'excerpt' => $this->faker->sentence(),
             'content' => $this->faker->paragraphs(4, true),
             'is_draft' => $this->faker->randomElement([true, false]),
             'categories' => $this->faker->words(),
