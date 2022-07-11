@@ -17,3 +17,7 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 /.vagrant
+
+#Frontend
+public/ng14
+public14
