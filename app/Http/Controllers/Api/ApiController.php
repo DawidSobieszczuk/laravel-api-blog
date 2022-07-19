@@ -18,12 +18,12 @@ class ApiController extends Controller
         ], $status, $header, $option);
     }
 
-    public function responseUnauthenticated($message = "Unauthenticated")
+    public function responseUnauthenticated($message = "Unauthenticated.")
     {
         return $this->responseMessage($message, 401);
     }
 
-    public function responseNotFound($message = "Not Found")
+    public function responseNotFound($message = "Not Found.")
     {
         return $this->responseMessage($message, 404);
     }

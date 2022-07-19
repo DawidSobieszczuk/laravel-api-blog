@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin');
+        Schema::create('menu_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('menu_id');
+            $table->string('name');
+            $table->string('href');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_admin');
-        });
+        Schema::dropIfExists('menu_items');
     }
 };

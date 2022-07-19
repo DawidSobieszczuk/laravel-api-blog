@@ -18,11 +18,11 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => 0,
             'title' => $this->faker->sentence(),
-            'thumbnail' => $this->faker->word(),
-            'excerpt' => $this->faker->sentence(),
-            'content' => $this->faker->paragraphs(4, true),
+            'thumbnail' => 'https://picsum.photos/1600/900',
+            'excerpt' => join(' ', $this->faker->sentences(4)),
+            'content' => $this->faker->paragraphs(24, true),
             'is_draft' => $this->faker->randomElement([true, false]),
             'categories' => $this->faker->words(),
             'tags' => $this->faker->words(),

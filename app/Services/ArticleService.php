@@ -16,55 +16,68 @@ class ArticleService
         $this->userService = $userService;
     }
 
-    public function getAllArticles(bool $isDraft = false)
+    public function getAllArticles($allowDraft)
     {
-        return $this->articleRepository->all($isDraft);
+        return $this->articleRepository->all($allowDraft);
     }
 
-    public function getAllArticlesPaginate(bool $isDraft = false, $perPage = null)
+    public function getAllArticlesPaginate($allowDraft, $perPage = null)
     {
-        return $this->articleRepository->paginate($isDraft, $perPage);
+        return $this->articleRepository->paginate($allowDraft, $perPage);
     }
 
-    public function getArticlesByCategoryPaginate($categoryName, bool $isDraft = false, $perPage = null)
+    public function getArticlesByCategory($categoryName, $allowDraft)
     {
-        return $this->articleRepository->searchByCategory($categoryName, $isDraft, $perPage);
+        return $this->articleRepository->searchByCategory($categoryName, $allowDraft);
     }
 
-    public function getArticlesByTagPaginate($tagName, bool $isDraft = false, $perPage = null)
+    public function getArticlesByCategoryPaginate($categoryName, $allowDraft, $perPage = null)
     {
-        return $this->articleRepository->searchByTag($tagName, $isDraft, $perPage);
+        return $this->articleRepository->searchByCategoryPaginate($categoryName, $allowDraft, $perPage);
     }
 
-    public function searchArticlesPaginate($slug, bool $isDraft = false, $perPage = null)
+    public function getArticlesByTag($tagName, $allowDraft)
     {
-        return $this->articleRepository->search($slug, $isDraft, $perPage);
+        return $this->articleRepository->searchByTag($tagName, $allowDraft);
     }
 
-    public function createNewArticleFromRequest(Request $request)
+    public function getArticlesByTagPaginate($tagName, $allowDraft, $perPage = null)
+    {
+        return $this->articleRepository->searchByTagPagiante($tagName, $allowDraft, $perPage);
+    }
+
+    public function searchArticles($slug, $allowDraft)
+    {
+        return $this->articleRepository->search($slug, $allowDraft);
+    }
+
+    public function searchArticlesPaginate($slug, $allowDraft, $perPage = null)
+    {
+        return $this->articleRepository->searchPaginate($slug, $allowDraft, $perPage);
+    }
+
+    public function getArticleById($id, $allowDraft)
+    {
+        return $this->articleRepository->find($id, $allowDraft);
+    }
+
+    public function createNewArticleFromRequest(Request $request, $author)
     {
         $fields = $request->validate([
             'title' => 'required|string',
             'thumbnail' => 'required|string',
             'excerpt' => 'required|string',
             'content' => 'required|string',
-            'is_draft' => 'boolean',
             'categories' => 'array',
             'tags' => 'array',
         ]);
 
-        $fields['is_draft'] = $fields['is_draft'] ?? true;
+        $fields['is_draft'] = true;
         $fields['categories'] = $fields['categories'] ?? [];
         $fields['tags'] = $fields['tags'] ?? [];
 
-        $article = $this->articleRepository->create($fields, $this->userService->getCurrentLoggedUser());
-        $article->load('user');
+        $article = $this->articleRepository->create($fields, $author);
         return $article;
-    }
-
-    public function getArticleById($id, bool $isDraft = false)
-    {
-        return $this->articleRepository->find($id, $isDraft);
     }
 
     public function updateArticleFromRequest($id, Request $request)
@@ -74,14 +87,22 @@ class ArticleService
             'thumbnail' => 'string',
             'excerpt' => 'string',
             'content' => 'string',
-            'is_draft' => 'boolean',
             'categories' => 'array',
             'tags' => 'array',
         ]);
 
         $article = $this->articleRepository->update($id, $fields);
-        $article->load('user');
         return $article;
+    }
+
+    public function publishArticle($id)
+    {
+        return $this->articleRepository->update($id, ['is_draft' => false]);
+    }
+
+    public function unpublishArticle($id)
+    {
+        return $this->articleRepository->update($id, ['is_draft' => true]);
     }
 
     public function destroyArticleById($id)

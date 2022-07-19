@@ -2,20 +2,22 @@
 
 namespace App\Services;
 
-use App\Repositories\OptionRepository;
+use App\Repositories\SocialRepository;
 
-class OptionService extends BaseService
+class SocialService extends BaseService
 {
     protected $createRules = [
         'name' => 'required|string',
-        'value' => 'required|string',
+        'icon' => 'required|string',
+        'href' => 'required|string',
     ];
     protected $updateRules = [
         'name' => 'string',
-        'value' => 'string',
+        'icon' => 'string',
+        'href' => 'string',
     ];
 
-    public function __construct(OptionRepository $repository)
+    public function __construct(SocialRepository $repository)
     {
         $this->repository = $repository;
     }

@@ -3,8 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Article;
-use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
 
 class ArticleRepository extends Repository
 {
@@ -13,10 +11,10 @@ class ArticleRepository extends Repository
         $this->model = $article;
     }
 
-    private function addDraftQuery($query, bool $isDraft)
+    private function addDraftQuery($query, bool $allowDraft)
     {
         return $query->when(
-            !$isDraft,
+            !$allowDraft,
             function ($query) {
                 $query->where('is_draft', false);
             }
@@ -42,17 +40,17 @@ class ArticleRepository extends Repository
         return $query->where('categories', 'like', '%"' . $slug . '"%');
     }
 
-    public function all(bool $isDraft = false)
+    public function all(bool $allowDraft = false)
     {
-        $query = $this->model->with('user');
-        $query = $this->addDraftQuery($query, $isDraft);
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
         return $query->get();
     }
 
-    public function paginate(bool $isDraft = false, $perPage = null)
+    public function paginate(bool $allowDraft = false, $perPage = null)
     {
-        $query = $this->model->with('user');
-        $query = $this->addDraftQuery($query, $isDraft);
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
         return $query->paginate($perPage);
     }
 
@@ -62,33 +60,57 @@ class ArticleRepository extends Repository
         return $user->articles()->create($input);
     }
 
-    public function find($id, bool $isDraft = false)
+    public function find($id, bool $allowDraft = false)
     {
-        $query = $this->model->with('user');
-        $query = $this->addDraftQuery($query, $isDraft);
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
         return $query->find($id);
     }
 
-    public function search($slug, bool $isDraft = false, $perPage = null)
+    public function search($slug, bool $allowDraft = false)
     {
-        $query = $this->model->with('user');
-        $query = $this->addDraftQuery($query, $isDraft);
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
+        $query = $this->addSearchQuery($query, $slug);
+        return $query->get();
+    }
+
+    public function searchPaginate($slug, bool $allowDraft = false, $perPage = null)
+    {
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
         $query = $this->addSearchQuery($query, $slug);
         return $query->paginate($perPage);
     }
 
-    public function searchByTag($slug, bool $isDraft = false, $perPage = null)
+    public function searchByTag($slug, bool $allowDraft = false)
     {
-        $query = $this->model->with('user');
-        $query = $this->addDraftQuery($query, $isDraft);
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
+        $query = $this->addSearchByTagQuery($query, $slug);
+        return $query->get();
+    }
+
+    public function searchByTagPagiante($slug, bool $allowDraft = false, $perPage = null)
+    {
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
         $query = $this->addSearchByTagQuery($query, $slug);
         return $query->paginate($perPage);
     }
 
-    public function searchByCategory($slug, bool $isDraft = false, $perPage = null)
+    public function searchByCategory($slug, bool $allowDraft = false, $perPage = null)
     {
-        $query = $this->model->with('user');
-        $query = $this->addDraftQuery($query, $isDraft);
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
+        $query = $this->addSearchByCategoryQuery($query, $slug);
+        return $query->get();
+    }
+
+    public function searchByCategoryPaginate($slug, bool $allowDraft = false, $perPage = null)
+    {
+        $query = $this->model;
+        $query = $this->addDraftQuery($query, $allowDraft);
         $query = $this->addSearchByCategoryQuery($query, $slug);
         return $query->paginate($perPage);
     }

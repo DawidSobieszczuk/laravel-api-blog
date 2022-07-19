@@ -13,7 +13,7 @@ class UpdateUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:update {id} {--N|name=} {--E|email=} {--P|password=} {--A|is_admin=}';
+    protected $signature = 'user:update {id} {--N|name=} {--E|email=} {--P|password=}';
 
     /**
      * The console command description.
@@ -40,12 +40,14 @@ class UpdateUser extends Command
     public function handle(UserService $userService)
     {
         try {
-            $userService->updateUserById(
+            $input = array();
+            if ($this->option('name')) $input['name'] = $this->option('name');
+            if ($this->option('email')) $input['email'] = $this->option('email');
+            if ($this->option('password')) $input['password'] = $this->option('password');
+
+            $userService->updateById(
                 $this->argument('id'),
-                $this->option('name'),
-                $this->option('email'),
-                $this->option('password'),
-                $this->option('is_admin')
+                $input,
             );
             $this->line("<fg=green>User updated.</>");
         } catch (Exception $e) {

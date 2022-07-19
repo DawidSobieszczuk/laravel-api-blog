@@ -15,12 +15,12 @@ class UserController extends ApiController
         $this->userService = $userService;
     }
 
-    public function show()
+    public function showCurrentUser()
     {
         return new UserResource($this->userService->getCurrentLoggedUser());
     }
 
-    public function update(Request $request)
+    public function updateCurrentUser(Request $request)
     {
         return new UserResource($this->userService->updateCurrentLoggedUserFromRequest($request));
     }

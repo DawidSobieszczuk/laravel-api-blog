@@ -13,7 +13,7 @@ class CreateUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:create {name} {email} {password} {is_admin=0}';
+    protected $signature = 'user:create {name} {email} {password}';
 
     /**
      * The console command description.
@@ -40,11 +40,12 @@ class CreateUser extends Command
     public function handle(UserService $userService)
     {
         try {
-            $userService->createNewUser(
-                $this->argument('name'),
-                $this->argument('email'),
-                $this->argument('password'),
-                boolval($this->argument('is_admin'))
+            $userService->create(
+                [
+                    'name' => $this->argument('name'),
+                    'email' => $this->argument('email'),
+                    'password' => $this->argument('password'),
+                ]
             );
             $this->line("<fg=green>User created.</>");
         } catch (Exception $e) {
