@@ -45,6 +45,7 @@ class PermissionsSeeder extends Seeder
         $editor->givePermissionTo('unpublish articles');
 
         // super-admin
-        Role::create(['name' => 'super-admin']); // gets all permissions via Gate::before rule; see AuthServiceProvider
+        $admin = Role::create(['name' => 'admin']);
+        $admin->givePermissionTo(Permission::all());
     }
 }

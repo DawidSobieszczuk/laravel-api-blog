@@ -33,7 +33,7 @@ class DebugSeeder extends Seeder
             'name' => 'super-admin',
             'email' => 'superadmin@am.pl',
             'password' => 'password',
-        ])->assignRole('writer', 'editor', 'super-admin');
+        ])->assignRole('writer', 'editor', 'admin');
 
         Option::factory()->count(10)->create();
         Article::factory()->count(100)->create();
