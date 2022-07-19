@@ -27,6 +27,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/logout', [AuthController::class, 'logout']);
 
         Route::get('/user', [UserController::class, 'showCurrentUser']);
+        Route::get('/user/permissions', [UserController::class, 'showCurrentUserPermissions']);
+        Route::get('/user/can/{slug}', [UserController::class, 'showCurrentUserHasPermission']);
         Route::put('/user', [UserController::class, 'updateCurrentUser']);
     });
 

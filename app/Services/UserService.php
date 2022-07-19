@@ -33,7 +33,7 @@ class UserService extends BaseService
         if (!auth('sanctum')->user()) return null;
 
         $id = auth('sanctum')->user()->id;
-        return $this->getById($id);
+        return $this->repository->find($id);
     }
 
     public function updateCurrentLoggedUserFromRequest(Request $request)
@@ -69,5 +69,13 @@ class UserService extends BaseService
                 'token' => $user->createToken($this->tokenName)->plainTextToken,
             ],
         );
+    }
+
+    public function getCurrentLoggedUserPermissions()
+    {
+        $user = $this->getCurrentLoggedUser();
+        if (!$user) return [];
+
+        return $user->getAllPermissions();
     }
 }
