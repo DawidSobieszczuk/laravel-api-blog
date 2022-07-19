@@ -16,4 +16,9 @@ class MenuRepository extends Repository
     {
         return $this->model->with('menuItems')->find($id);
     }
+
+    public function findByName($name)
+    {
+        return $this->model->with('menuItems')->where('name', $name)->first();
+    }
 }

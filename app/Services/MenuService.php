@@ -75,6 +75,11 @@ class MenuService
         return $this->menuRepository->find($id);
     }
 
+    public function getMenuByNameWithMenuItems($name)
+    {
+        return $this->menuRepository->findByName($name);
+    }
+
     public function getMenuItemById($id)
     {
         return $this->menuItemRepository->find($id);

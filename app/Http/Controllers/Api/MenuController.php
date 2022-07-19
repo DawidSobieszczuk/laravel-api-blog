@@ -31,6 +31,12 @@ class MenuController extends ApiController
         return $menu ? new MenuResource($menu) : $this->responseNotFound();
     }
 
+    public function showByName($name)
+    {
+        $menu = $this->menuService->getMenuByNameWithMenuItems($name);
+        return $menu ? new MenuResource($menu) : $this->responseNotFound();
+    }
+
     public function update($id, Request $request)
     {
         $menu = $this->menuService->updateMenuByIdFromRequest($id, $request);
