@@ -28,7 +28,12 @@ class OptionController extends ApiController
     public function show($id)
     {
         $option = $this->optionService->getById($id);
+        return $option ? new OptionResource($option) : $this->responseNotFound();
+    }
 
+    public function showByName($name)
+    {
+        $option = $this->optionService->getByName($name);
         return $option ? new OptionResource($option) : $this->responseNotFound();
     }
 

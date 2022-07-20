@@ -52,7 +52,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/articles/search/{slug}/paginate', [SearchController::class, 'searchPaginate']);
 
     Route::get('/options', [OptionController::class, 'index']);
-    Route::get('/options/{id}', [OptionController::class, 'show']);
+    Route::get('/options/{id}', [OptionController::class, 'show'])->where('id', '[0-9]+');
+    Route::get('/options/{slug}', [OptionController::class, 'showByName']);
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/options', [OptionController::class, 'store'])->middleware('permission:create options');
         Route::put('/options/{id}', [OptionController::class, 'update'])->middleware('permission:edit options');

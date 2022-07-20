@@ -11,7 +11,7 @@ class OptionRepository extends Repository
         $this->model = $option;
     }
 
-    public function findByName(string $name): Option
+    public function findByName(string $name): ?Option
     {
         return $this->model->where('name', $name)->first();
     }
