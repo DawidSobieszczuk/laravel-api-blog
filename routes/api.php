@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\OptionController;
@@ -83,5 +84,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/menuitems', [MenuItemController::class, 'store'])->middleware('permission:create menus');
         Route::put('/menuitems/{id}', [MenuItemController::class, 'update'])->middleware('permission:update menus');
         Route::delete('/menuitems/{id}', [MenuItemController::class, 'destroy'])->middleware('permission:delete menus');
+    });
+
+    Route::get('/files', [FileController::class, 'index']);
+    Route::get('/files/{id}', [FileController::class, 'show'])->where('id', '[0-9]+');;
+    Route::get('/files/{slug}', [FileController::class, 'showByName']);
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('/files', [FileController::class, 'store'])->middleware('permission:upload files');
+        Route::delete('/files/{id}', [FileController::class, 'destroy'])->middleware('permission:delete files');
     });
 });

@@ -33,16 +33,20 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit menus']);
         Permission::create(['name' => 'delete menus']);
 
+        Permission::create(['name' => 'upload files']);
+        Permission::create(['name' => 'delete files']);
+
         // writer
         $writer = Role::create(['name' => 'writer']);
         $writer->givePermissionTo('create articles');
         $writer->givePermissionTo('edit articles');
-        $writer->givePermissionTo('delete articles');
+        $writer->givePermissionTo('upload files');
 
         // editor
         $editor = Role::create(['name' => 'editor']);
         $editor->givePermissionTo('publish articles');
         $editor->givePermissionTo('unpublish articles');
+        $editor->givePermissionTo('delete files');
 
         // super-admin
         $admin = Role::create(['name' => 'admin']);
