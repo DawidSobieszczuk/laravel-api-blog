@@ -15,12 +15,12 @@ class UserService extends BaseService
     protected $createRules = [
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
-        'password' => 'required|string',
+        'password' => 'required|string|min:4',
     ];
     protected $updateRules = [
         'name' => 'string',
         'email' => 'email|unique:users,email',
-        'password' => 'string|confirmed',
+        'password' => 'string|confirmed|min:4',
     ];
 
     public function __construct(UserRepository $repository)

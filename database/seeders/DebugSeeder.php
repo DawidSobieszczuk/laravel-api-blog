@@ -21,18 +21,18 @@ class DebugSeeder extends Seeder
     {
         $userService->create([
             'name' => 'writer',
-            'email' => 'writer@am.pl',
-            'password' => 'password',
+            'email' => 'writer@ds.ds',
+            'password' => 'pass',
         ])->assignRole('writer');
         $userService->create([
             'name' => 'editor',
-            'email' => 'editor@am.pl',
-            'password' => 'password',
+            'email' => 'editor@ds.ds',
+            'password' => 'pass',
         ])->assignRole('writer', 'editor');
         $userService->create([
-            'name' => 'super-admin',
-            'email' => 'superadmin@am.pl',
-            'password' => 'password',
+            'name' => 'admin',
+            'email' => 'admin@ds.ds',
+            'password' => 'pass',
         ])->assignRole('writer', 'editor', 'admin');
 
         Option::factory()->count(10)->create();

@@ -3,10 +3,10 @@
 TODO list for Vesion 1.0.0
 
 ### Todo
-- [ ] create files upload module(Controller, Service)
 
 ### In Progress
-- [ ] fix user password, add require length to create and update
+- [ ] create files upload module(Controller, Service)
 
 ### Done ✓
+- [x] fix user password, add min length to create and update
 - [x] create README.md and TODO.md
