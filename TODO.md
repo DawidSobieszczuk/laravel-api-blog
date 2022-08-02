@@ -4,6 +4,7 @@ TODO list for Vesion 1.0.0
 
 ### Todo
 - [ ] fix user create and update artisan commands
+- [ ] disable throtte for admin routes
 
 ### In Progress
 
