@@ -19,5 +19,4 @@ Homestead.json
 /.vagrant
 
 #Frontend
-public/ng14
-public14
+public/ng
