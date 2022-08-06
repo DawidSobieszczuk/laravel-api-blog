@@ -16,10 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionsSeeder::class,
+            AxisMundiSeeder::class
         ]);
-
-        if (App::hasDebugModeEnabled()) {
-            $this->call(DebugSeeder::class);
-        }
     }
 }
