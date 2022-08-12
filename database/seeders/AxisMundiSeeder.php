@@ -49,7 +49,7 @@ class AxisMundiSeeder extends Seeder
             'value' => 'AxisMundi © 2023',
         ]);
         $optionService->create([
-            'name' => 'hero',
+            'name' => 'hero-image',
             'value' => 'ng/assets/hero.png',
         ]);
 

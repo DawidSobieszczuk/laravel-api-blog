@@ -47,7 +47,7 @@ class ArticleFactory extends Factory
                 ] 
             }'),
             'is_draft' => $this->faker->randomElement([true, false]),
-            'categories' => $this->faker->randomElement(['Kateoria I', 'Kateoria II', 'Kateoria III']),
+            'categories' => [$this->faker->randomElement(['Kateoria I', 'Kateoria II', 'Kateoria III'])],
             'tags' => $this->faker->randomElements(['foo', 'boo', 'tag'], 2),
         ];
     }
