@@ -74,7 +74,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/menus/{slug}', [MenuController::class, 'showByName']);
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/menus', [MenuController::class, 'store'])->middleware('permission:create menus');
-        Route::put('/menus/{id}', [MenuController::class, 'update'])->middleware('permission:update menus');
+        Route::put('/menus/{id}', [MenuController::class, 'update'])->middleware('permission:edit menus');
         Route::delete('/menus/{id}', [MenuController::class, 'destroy'])->middleware('permission:delete menus');
     });
 
@@ -82,7 +82,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/menuitems/{id}', [MenuItemController::class, 'show']);
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/menuitems', [MenuItemController::class, 'store'])->middleware('permission:create menus');
-        Route::put('/menuitems/{id}', [MenuItemController::class, 'update'])->middleware('permission:update menus');
+        Route::put('/menuitems/{id}', [MenuItemController::class, 'update'])->middleware('permission:edit menus');
         Route::delete('/menuitems/{id}', [MenuItemController::class, 'destroy'])->middleware('permission:delete menus');
     });
 
