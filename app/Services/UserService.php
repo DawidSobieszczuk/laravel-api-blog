@@ -64,10 +64,8 @@ class UserService extends BaseService
         if (!Hash::check($fields['password'], $user->password)) return false;
 
         return array(
-            'data' => [
-                'user' => $user,
-                'token' => $user->createToken($this->tokenName)->plainTextToken,
-            ],
+            'user' => $user,
+            'token' => $user->createToken($this->tokenName)->plainTextToken,
         );
     }
 

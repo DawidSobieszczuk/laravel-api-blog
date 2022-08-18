@@ -17,16 +17,16 @@ class AuthController extends ApiController
 
     public function login(Request $request)
     {
-        $token = $this->userService->createTokenFromRequest($request);
+        $data = $this->userService->createTokenFromRequest($request);
 
-        if (!$token) return $this->responseUnauthenticated("Email or password not match");
+        if (!$data) return $this->responseUnauthenticated("Email or password not match");
 
-        return $this->response($token, 201);
+        return $this->response(['data'=> $data, 'message' => 'User logged'], 201);
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return $this->responseMessage('Logout.');
+        return $this->responseMessage('User logged out');
     }
 }
